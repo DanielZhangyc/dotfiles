@@ -1,0 +1,25 @@
+{
+  "name": "yuchenzhang-competitive-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "cpp",
+        "path": "./cpp.json"
+      },
+      {
+        "language": [
+          "plaintex",
+          "tex"
+        ],
+        "path": "./tex.json"
+      },
+      {
+        "language": [
+          "bib",
+          "bibtex"
+        ],
+        "path": "./bibtex.json"
+      }
+    ]
+  }
+}
