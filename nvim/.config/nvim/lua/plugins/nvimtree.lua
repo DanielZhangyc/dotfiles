@@ -14,12 +14,8 @@ return {
 
           local directory = vim.fn.fnamemodify(event.file, ":p")
 
-          -- Replace the directory buffer before loading nvim-tree so a
-          -- directory argument behaves like an explorer root, not a new file.
-          vim.cmd.enew()
-          if vim.api.nvim_buf_is_valid(event.buf) then
-            vim.api.nvim_buf_delete(event.buf, { force = true })
-          end
+          -- Keep the initial directory buffer valid. NvChad's tabufline may
+          -- still reference it when the first file is opened.
           vim.cmd.cd(vim.fn.fnameescape(directory))
 
           require("lazy").load { plugins = { "nvim-tree.lua" } }
@@ -28,6 +24,12 @@ return {
       })
     end,
     opts = function(_, opts)
+      opts.actions = opts.actions or {}
+      opts.actions.open_file = opts.actions.open_file or {}
+      opts.actions.open_file.window_picker = {
+        enable = false,
+      }
+
       opts.on_attach = function(bufnr)
         local api = require "nvim-tree.api"
         local smart_splits = require "smart-splits"
