@@ -9,6 +9,14 @@
 
 为了正常显示 `tmux` 中的 Agent 指示图标，需要安装 https://github.com/DanielZhangyc/maple-font/ 的 fork 分支 maple-font
 
+| AI 工具 | 字符位置 | Shell 转义 |
+|---|---:|---|
+| Claude | `U+F2000` | `\U000F2000` |
+| Codex | `U+F2001` | `\U000F2001` |
+| Gemini | `U+F2002` | `\U000F2002` |
+| OpenCode | `U+F2003` | `\U000F2003` |
+| Pi | `U+F2004` | `\U000F2004` |
+
 ## 使用
 
 安装 Stow：
