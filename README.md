@@ -7,6 +7,8 @@
 - `tmux`
 - `zsh`
 
+为了正常显示 `tmux` 中的 Agent 指示图标，需要安装 https://github.com/DanielZhangyc/maple-font/ 的 fork 分支 maple-font
+
 ## 使用
 
 安装 Stow：
