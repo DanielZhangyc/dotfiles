@@ -7,6 +7,41 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
+local tabufline = require "nvchad.tabufline"
+
+if not tabufline.close_without_empty_buffer then
+  local close_buffer = tabufline.close_buffer
+
+  tabufline.close_buffer = function(bufnr)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
+
+    local file_buffers = vim.tbl_filter(function(buf)
+      return vim.api.nvim_buf_is_valid(buf)
+        and vim.api.nvim_get_option_value("buflisted", { buf = buf })
+        and vim.api.nvim_get_option_value("buftype", { buf = buf }) == ""
+        and vim.api.nvim_buf_get_name(buf) ~= ""
+    end, vim.t.bufs or {})
+
+    if #file_buffers == 1 and file_buffers[1] == bufnr then
+      vim.cmd("confirm bdelete " .. bufnr)
+
+      local was_deleted = not vim.api.nvim_buf_is_valid(bufnr)
+        or not vim.api.nvim_get_option_value("buflisted", { buf = bufnr })
+
+      if not was_deleted then
+        return
+      end
+
+      vim.cmd.redrawtabline()
+      return
+    end
+
+    close_buffer(bufnr)
+  end
+
+  tabufline.close_without_empty_buffer = true
+end
+
 local smart_splits = require "smart-splits"
 
 -- Seamless navigation between Neovim windows and tmux panes.
