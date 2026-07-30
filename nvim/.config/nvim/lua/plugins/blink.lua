@@ -40,6 +40,9 @@ return {
     },
     opts = {
       cmdline = {
+        keymap = {
+          ["<Tab>"] = { "show", "accept" },
+        },
         completion = {
           menu = {
             auto_show = true,

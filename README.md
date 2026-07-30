@@ -4,6 +4,7 @@
 
 - `ghostty`
 - `nvim`
+- `tmux`
 - `zsh`
 
 ## 使用
@@ -17,19 +18,19 @@ brew install stow
 克隆仓库后，在仓库根目录执行：
 
 ```sh
-stow --target="$HOME" ghostty nvim zsh
+stow --target="$HOME" ghostty nvim tmux zsh
 ```
 
 取消所有链接：
 
 ```sh
-stow --delete --target="$HOME" ghostty nvim zsh
+stow --delete --target="$HOME" ghostty nvim tmux zsh
 ```
 
 修改 package 后可以重新应用链接：
 
 ```sh
-stow --restow --target="$HOME" ghostty nvim zsh
+stow --restow --target="$HOME" ghostty nvim tmux zsh
 ```
 
 每个顶层目录都是一个独立的 Stow package，其内部目录结构对应 `$HOME`。
