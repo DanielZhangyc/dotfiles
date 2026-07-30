@@ -1,3 +1,7 @@
+<img width="1512" height="832" alt="image" src="https://github.com/user-attachments/assets/da7fb4ee-e2ff-4210-b508-ea3bc023f4cf" />
+<img width="1512" height="832" alt="image" src="https://github.com/user-attachments/assets/218396b5-f4ca-4824-9def-a50235da184b" />
+
+
 # Dotfiles
 
 使用 [GNU Stow](https://www.gnu.org/software/stow/) 管理的本地配置：
