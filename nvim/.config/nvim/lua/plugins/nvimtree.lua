@@ -24,6 +24,9 @@ return {
       })
     end,
     opts = function(_, opts)
+      opts.filters = opts.filters or {}
+      opts.filters.git_ignored = false
+
       opts.actions = opts.actions or {}
       opts.actions.open_file = opts.actions.open_file or {}
       opts.actions.open_file.window_picker = {

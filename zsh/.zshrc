@@ -121,3 +121,10 @@ if [[ -n "$BREW_PREFIX" && -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-sy
 elif [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
+
+# kimi-code
+export PATH="/Users/yuchenzhang/.kimi-code/bin:$PATH"
+
+# pi
+export PATH="/Users/yuchenzhang/.bun/bin:$PATH"
+eval "$(direnv hook zsh)"
