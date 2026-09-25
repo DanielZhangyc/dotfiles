@@ -187,7 +187,7 @@
                         ]
                     },
                     {
-                        "description": "Unified navigation: Ctrl H/J/K/L focus, Option H/J/K/L resize outside Ghostty",
+                        "description": "Unified navigation: Ctrl H/J/K/L focus, Option H/J/K/L resize outside Ghostty/kitty",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -216,7 +216,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]
@@ -248,7 +249,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]
@@ -280,7 +282,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]
@@ -312,7 +315,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]
@@ -343,7 +347,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]
@@ -374,7 +379,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]
@@ -405,7 +411,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]
@@ -436,7 +443,8 @@
                                     {
                                         "type": "frontmost_application_unless",
                                         "bundle_identifiers": [
-                                            "^com\\.mitchellh\\.ghostty$"
+                                            "^com[.]mitchellh[.]ghostty$",
+                                            "^net[.]kovidgoyal[.]kitty$"
                                         ]
                                     }
                                 ]

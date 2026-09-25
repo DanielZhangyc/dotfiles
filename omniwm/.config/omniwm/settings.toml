@@ -1073,3 +1073,9 @@ name = "6"
 
 [workspaces.monitorAssignment]
 type = "secondary"
+
+[[appRules]]
+bundleId = "net.kovidgoyal.kitty"
+id = "98703CA3-9CE7-4BE7-A2F0-522D5FA0332F"
+minHeight = 48.0
+minWidth = 90.0

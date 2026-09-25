@@ -18,10 +18,10 @@ if [ -n "${2:-}" ]; then
     [ "$active" = 1 ] || exit 0
 fi
 
-# A key repeat queued in tmux must not keep walking after leaving Ghostty.
+# A key repeat queued in tmux must not keep walking after leaving a supported terminal.
 focused=$(omniwmctl query focused-window --json 2>/dev/null) || exit 0
 printf '%s\n' "$focused" | jq -e \
-    '.ok == true and .result.payload.window.app.bundleId == "com.mitchellh.ghostty"' \
+    '.ok == true and (.result.payload.window.app.bundleId | . == "com.mitchellh.ghostty" or . == "net.kovidgoyal.kitty")' \
     >/dev/null 2>&1 || exit 0
 
 exec omniwmctl command focus "$direction" >/dev/null

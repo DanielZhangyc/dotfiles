@@ -4,17 +4,20 @@ return {
     lazy = false,
     priority = 1000,
     init = function()
-      -- Terminal capability probing cannot always cross tmux reliably.
-      -- Ghostty exposes TERM_PROGRAM; inside tmux, fall back to the tmux
-      -- client's termname (e.g. xterm-ghostty) which is what snacks'
-      -- detection uses when tmux has extended-keys enabled.
-      local is_ghostty = vim.env.TERM_PROGRAM == "ghostty"
-      if not is_ghostty and vim.env.TMUX then
+      -- An attached tmux session can retain the previous terminal's environment.
+      -- Prefer its current client over inherited TERM_PROGRAM when switching apps.
+      local terminal = vim.env.TERM_PROGRAM or vim.env.TERM or ""
+      if vim.env.TMUX then
         local ok, out = pcall(vim.fn.system, { "tmux", "display-message", "-p", "#{client_termname}" })
-        is_ghostty = ok and vim.trim(out):find("ghostty", 1, true) ~= nil
+        if ok and vim.v.shell_error == 0 and vim.trim(out) ~= "" then
+          terminal = vim.trim(out)
+        end
+      elseif vim.env.KITTY_WINDOW_ID then
+        terminal = "kitty"
       end
-      if is_ghostty then
-        vim.env.SNACKS_GHOSTTY = "true"
+      if terminal:find("kitty", 1, true) or terminal:find("ghostty", 1, true) then
+        vim.env.SNACKS_KITTY = terminal:find("kitty", 1, true) and "true" or "false"
+        vim.env.SNACKS_GHOSTTY = terminal:find("ghostty", 1, true) and "true" or "false"
       end
       -- Fix: re-place images after tmux repaints the pane (tab/buffer switches).
       require("configs.image_tmux_render_fix").setup()
