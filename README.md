@@ -101,13 +101,3 @@ stow --restow --target="$HOME" ghostty kitty nvim tmux zsh omniwm karabiner
 | Neovim 普通模式 | `Leader → t → f` | 切换浮动终端 |
 | Neovim 普通模式 | `;` | 进入命令行模式 |
 | Neovim 插入模式 | `jk` | 返回普通模式 |
-
-## kitty
-
-kitty 使用 Maple Mono NF CN 18pt 和 Catppuccin Mocha，tmux 快捷键与 Ghostty 一致。
-为排查 Neovim 卡顿，默认使用不透明背景，不启用模糊或光标拖尾。
-启动仍使用 zsh，自动接入未连接的 tmux 会话；fish 的环境迁移独立处理。
-Karabiner 和 OmniWM 桥接同时支持 Ghostty、kitty；Snacks 优先识别当前 tmux 客户端。
-Ghostty 的全局快捷终端（Ctrl+反引号）和原生分屏快捷键没有迁入 kitty。
-kitty 隐藏原生标签栏，仅启用 stack 布局，禁用原生分屏和标签页快捷键；分屏、标签页统一交给 tmux。
-保留 Cmd+N 新建独立系统窗口。Cmd+Shift+, 重载配置；Cmd++ / Cmd+- / Cmd+0 调整字体。
