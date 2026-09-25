@@ -128,3 +128,19 @@ export PATH="/Users/yuchenzhang/.kimi-code/bin:$PATH"
 # pi
 export PATH="/Users/yuchenzhang/.bun/bin:$PATH"
 eval "$(direnv hook zsh)"
+
+# Reconnect a detached session; never share an already attached session.
+if [[ -o interactive && "${TERM_PROGRAM:-}" == "ghostty" && -z "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    () {
+        local ghostty_tmux_session
+        ghostty_tmux_session=$(tmux list-sessions -f '#{==:#{session_attached},0}' -O activity -r -F '#{session_id}' 2>/dev/null)
+        ghostty_tmux_session=${ghostty_tmux_session%%$'\n'*}
+        if [[ -n "$ghostty_tmux_session" ]]; then
+            # Recheck inside tmux in case another window attached after the list.
+            exec tmux if-shell -t "$ghostty_tmux_session" -F '#{session_attached}' \
+                'new-session' "attach-session -t '$ghostty_tmux_session'"
+        else
+            exec tmux new-session
+        fi
+    }
+fi
