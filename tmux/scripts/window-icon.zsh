@@ -6,20 +6,18 @@
 # #{pane_current_command} alone is unreliable: interpreted programs report
 # the interpreter's name (pi runs via `#!/usr/bin/env node`, so tmux sees
 # "node" and the pi icon never matched). Instead resolve the true foreground
-# process from the pane's tty — the process that owns the terminal's
-# foreground process group (pgid == tpgid) — and fall back to
-# pane_current_command only when that fails.
+# process from the pane's tty — the terminal's foreground process-group leader
+# (pid == tpgid) — and fall back to pane_current_command only when that fails.
 
 pane_count=${1:-1}
 command_name=${2:-}
 tty_name=${3:-}
 
-# `ps -t` lists every process attached to the pane's tty; while a job is
-# running, the shell sits in its own background group and drops out of the
-# filter, leaving the foreground application (last in a pipeline wins).
+# The foreground group can contain long-lived helpers (pi starts sleep/caffeinate
+# workers), so select its leader instead of whichever process ps lists last.
 if [[ -n $tty_name && $tty_name != '?' ]]; then
   fg_command=$(ps -t "$tty_name" -o pid=,pgid=,tpgid=,comm= 2>/dev/null \
-               | awk '$2 == $3 { print $4 }' | tail -n 1)
+               | awk '$1 == $3 { print $4; exit }')
   [[ -n $fg_command ]] && command_name=$fg_command
 fi
 

@@ -11,7 +11,6 @@
 - `nvim`
 - `tmux`
 - `zsh`
-- `omniwm`（macOS）
 - `karabiner`（macOS）
 
 为了正常显示 `tmux` 中的 Agent 指示图标，需要安装 https://github.com/DanielZhangyc/maple-font/ 的 fork 分支 maple-font
@@ -35,19 +34,19 @@ brew install stow
 克隆仓库后，在仓库根目录执行：
 
 ```sh
-stow --target="$HOME" ghostty kitty nvim tmux zsh omniwm karabiner
+stow --target="$HOME" ghostty kitty nvim tmux zsh karabiner
 ```
 
 取消所有链接：
 
 ```sh
-stow --delete --target="$HOME" ghostty kitty nvim tmux zsh omniwm karabiner
+stow --delete --target="$HOME" ghostty kitty nvim tmux zsh karabiner
 ```
 
 修改 package 后可以重新应用链接：
 
 ```sh
-stow --restow --target="$HOME" ghostty kitty nvim tmux zsh omniwm karabiner
+stow --restow --target="$HOME" ghostty kitty nvim tmux zsh karabiner
 ```
 
 每个顶层目录都是一个独立的 Stow package，其内部目录结构对应 `$HOME`。
@@ -58,24 +57,8 @@ stow --restow --target="$HOME" ghostty kitty nvim tmux zsh omniwm karabiner
 
 | 配置 / 作用域 | 快捷键 | 操作 |
 |---|---|---|
-| 跨层导航 | `Ctrl+H/J/K/L` | Neovim 分屏 → tmux 面板 → 桌面窗口；到边缘进入下一层 |
-| 按应用调整尺寸 | `Option+H/J/K/L` | Ghostty / kitty 内调整终端分屏，其他应用调整桌面尺寸；不会自动跨层 |
-| OmniWM | `Ctrl+Shift+H/J/K/L` | 移动当前桌面窗口；Ghostty 内也作用于整个窗口 |
-| OmniWM | `Ctrl+Option+Shift+H/L` | 整个 container 向左／右移动 |
-| OmniWM | `Ctrl+Option+H/L` | 缩小／增大桌面列宽，包括 Ghostty 外层窗口 |
-| OmniWM | `Ctrl+Option+K/J` | 缩小／增大列内窗口高度（横向 Niri） |
-| OmniWM | `Ctrl+Option+Enter` | 整个 container 扩展到屏幕宽度／恢复，原 `Option+Shift+F` 功能 |
-| OmniWM | `Option+1–9` | 切换到对应编号的已有工作区 |
-| OmniWM | `Option+Shift+1–9` | 把当前窗口移到对应工作区 |
-| OmniWM | `Option+0` | 返回上一个工作区 |
-| OmniWM | `Option+Tab` | 返回上一个窗口 |
-| OmniWM | `Ctrl+Option+←/→` | 切换到上一个／下一个显示器 |
-| OmniWM | `Ctrl+Option+Shift+←/→` | 把窗口移到左／右显示器 |
-| OmniWM | `Ctrl+Option+F` | 浮动／平铺 |
-| OmniWM | `Ctrl+Option+O` | 窗口概览 |
-| OmniWM | `Ctrl+Option+T` | 列标签模式 |
-| OmniWM | `Ctrl+Option+B` | 均衡桌面布局尺寸 |
-| OmniWM | `Ctrl+Option+Space` | 命令面板 |
+| 跨层导航 | `Ctrl+H/J/K/L` | Neovim 分屏 → tmux 面板；到终端边缘停止 |
+| 按应用调整尺寸 | `Option+H/J/K/L` | Ghostty / kitty 内调整 Neovim 分屏或 tmux 面板 |
 | Ghostty / kitty → tmux | `Cmd+T` | 新建 tmux 窗口（标签） |
 | Ghostty / kitty → tmux | `Cmd+W` | 关闭当前 tmux 窗口，需确认 |
 | Ghostty / kitty → tmux | `Cmd+1–9` | 切换 tmux 窗口 |

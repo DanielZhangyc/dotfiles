@@ -1,29 +1,25 @@
 {
     "profiles": [
         {
-            "name": "Default profile",
-            "selected": true,
-            "simple_modifications": [],
-            "virtual_hid_keyboard": {
-                "keyboard_type_v2": "ansi"
-            },
             "complex_modifications": {
                 "rules": [
                     {
                         "description": "Caps Lock: Rime toggle / Control hold / Command uppercase / Option return to Rime",
                         "manipulators": [
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ],
                                         "mandatory": [
                                             "left_command"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
                                         ]
                                     }
+                                },
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 500
                                 },
                                 "to": [
                                     {
@@ -36,26 +32,26 @@
                                 ],
                                 "to_if_alone": [
                                     {
-                                        "key_code": "caps_lock",
-                                        "hold_down_milliseconds": 200
+                                        "hold_down_milliseconds": 200,
+                                        "key_code": "caps_lock"
                                     }
                                 ],
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 500
-                                }
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ],
                                         "mandatory": [
                                             "right_command"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
                                         ]
                                     }
+                                },
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 500
                                 },
                                 "to": [
                                     {
@@ -68,26 +64,26 @@
                                 ],
                                 "to_if_alone": [
                                     {
-                                        "key_code": "caps_lock",
-                                        "hold_down_milliseconds": 200
+                                        "hold_down_milliseconds": 200,
+                                        "key_code": "caps_lock"
                                     }
                                 ],
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 500
-                                }
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ],
                                         "mandatory": [
                                             "left_option"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
                                         ]
                                     }
+                                },
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 500
                                 },
                                 "to": [
                                     {
@@ -105,22 +101,22 @@
                                         }
                                     }
                                 ],
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 500
-                                }
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
-                                        "optional": [
-                                            "caps_lock"
-                                        ],
                                         "mandatory": [
                                             "right_option"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
                                         ]
                                     }
+                                },
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 500
                                 },
                                 "to": [
                                     {
@@ -138,12 +134,9 @@
                                         }
                                     }
                                 ],
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 500
-                                }
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
@@ -151,6 +144,9 @@
                                             "caps_lock"
                                         ]
                                     }
+                                },
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 500
                                 },
                                 "to": [
                                     {
@@ -160,15 +156,13 @@
                                 ],
                                 "to_if_alone": [
                                     {
-                                        "key_code": "right_control"
+                                        "key_code": "f18",
+                                        "repeat": false
                                     }
                                 ],
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 500
-                                }
+                                "type": "basic"
                             },
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
@@ -182,269 +176,38 @@
                                         "key_code": "left_control",
                                         "lazy": true
                                     }
-                                ]
+                                ],
+                                "type": "basic"
                             }
                         ]
                     },
                     {
-                        "description": "Unified navigation: Ctrl H/J/K/L focus, Option H/J/K/L resize outside Ghostty/kitty",
+                        "description": "ROG FALCHION RX LOW PROFILE: physical left Control to Fn for Loop",
                         "manipulators": [
                             {
                                 "type": "basic",
                                 "from": {
-                                    "key_code": "h",
+                                    "key_code": "left_control",
                                     "modifiers": {
-                                        "mandatory": [
-                                            "control"
-                                        ],
                                         "optional": [
-                                            "caps_lock"
+                                            "any"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "h",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_command"
-                                        ]
+                                        "key_code": "fn"
                                     }
                                 ],
                                 "conditions": [
                                     {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "j",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "control"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "j",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_command"
-                                        ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "k",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "control"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "k",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_command"
-                                        ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "l",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "control"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "l",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option",
-                                            "left_command"
-                                        ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "h",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "option"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "h",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option"
-                                        ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "j",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "option"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "j",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option"
-                                        ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "k",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "option"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "k",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option"
-                                        ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "basic",
-                                "from": {
-                                    "key_code": "l",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "option"
-                                        ],
-                                        "optional": [
-                                            "caps_lock"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "l",
-                                        "modifiers": [
-                                            "left_control",
-                                            "left_option"
-                                        ]
-                                    }
-                                ],
-                                "conditions": [
-                                    {
-                                        "type": "frontmost_application_unless",
-                                        "bundle_identifiers": [
-                                            "^com[.]mitchellh[.]ghostty$",
-                                            "^net[.]kovidgoyal[.]kitty$"
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 2821,
+                                                "product_id": 6920,
+                                                "is_keyboard": true
+                                            }
                                         ]
                                     }
                                 ]
@@ -452,6 +215,23 @@
                         ]
                     }
                 ]
+            },
+            "devices": [
+                {
+                    "disable_built_in_keyboard_if_exists": true,
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 6920,
+                        "vendor_id": 2821
+                    },
+                    "ignore": false
+                }
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": {
+                "keyboard_type_v2": "ansi"
             }
         }
     ]
