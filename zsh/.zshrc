@@ -1,38 +1,31 @@
 #!/bin/zsh
-# ─── terminal-setup: Zsh config ─────────────────────────────────────
-# Powered by: Starship + zsh-autosuggestions + zsh-syntax-highlighting + fzf + fnm
 
-# ─── Homebrew ────────────────────────────────────────────────────────
-if [[ -d /opt/homebrew ]]; then
-    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-    BREW_PREFIX="/opt/homebrew"
-elif [[ -d /usr/local/Cellar ]]; then
-    export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
-    BREW_PREFIX="/usr/local"
-else
-    BREW_PREFIX=""
-fi
+# ─── Environment & PATH ──────────────────────────────────────────────
+BREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
+export PNPM_HOME="$HOME/Library/pnpm"
 
-# ─── Starship prompt ────────────────────────────────────────────────
+typeset -U path
+path=(
+    "$HOME/.bun/bin"
+    "$HOME/.kimi-code/bin"
+    "$PNPM_HOME"
+    "$HOME/.local/bin"
+    "$BREW_PREFIX/bin"
+    "$BREW_PREFIX/sbin"
+    $path
+)
+
+# ─── Prompt & Completions ────────────────────────────────────────────
 eval "$(starship init zsh)"
 
-# ─── Zsh plugins (via Homebrew) ──────────────────────────────────────
-# Autosuggestions (fish-like suggestions)
-if [[ -n "$BREW_PREFIX" && -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+[[ -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
     source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-elif [[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-    source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-fi
 
-# Completions
-if [[ -n "$BREW_PREFIX" && -d "$BREW_PREFIX/share/zsh-completions" ]]; then
+[[ -d "$BREW_PREFIX/share/zsh-completions" ]] && \
     fpath=("$BREW_PREFIX/share/zsh-completions" $fpath)
-elif [[ -d /usr/share/zsh-completions ]]; then
-    fpath=(/usr/share/zsh-completions $fpath)
-fi
+
 autoload -Uz compinit && compinit
+command -v zmx >/dev/null && eval "$(zmx completions zsh)"
 
 # Substring + case-insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=*'
@@ -41,48 +34,47 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=*'
 HISTSIZE=50000
 SAVEHIST=50000
 HISTFILE=~/.zsh_history
-setopt EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-setopt SHARE_HISTORY
-setopt INC_APPEND_HISTORY
+setopt EXTENDED_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_IGNORE_SPACE SHARE_HISTORY
 
-# ─── History prefix search (↑/↓) ─────────────────────────────────────
-# up-line-or-beginning-search: cursor stays at prefix position,
-# matched tail shown as gray autosuggestion — type more to narrow.
 autoload -U up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 bindkey '^[[A' up-line-or-beginning-search
 bindkey '^[[B' down-line-or-beginning-search
 
-# ─── fzf ─────────────────────────────────────────────────────────────
-if [[ -f ~/.fzf.zsh ]]; then
-    source ~/.fzf.zsh
-elif command -v fzf &>/dev/null; then
-    eval "$(fzf --zsh 2>/dev/null)"
-fi
+# ─── Tool Integrations ───────────────────────────────────────────────
+command -v fzf >/dev/null && eval "$(fzf --zsh)"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-# Use fd for fzf if available
-if command -v fd &>/dev/null; then
+if command -v fd >/dev/null; then
     export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 fi
 
-# ─── Zoxide (smart cd) ──────────────────────────────────────────────
 eval "$(zoxide init zsh)"
+command -v fnm >/dev/null && eval "$(fnm env --use-on-cd --shell zsh)"
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 
-# ─── fnm (Node version manager) ─────────────────────────────────────
-if command -v fnm &>/dev/null; then
-    eval "$(fnm env --use-on-cd --shell zsh)"
-fi
+# ─── zmx ─────────────────────────────────────────────────────────────
+# Keep Kitty identity current after reattaching a zmx session in another pane.
+typeset -U _zmx_tracked_env
+_zmx_tracked_env=( ${(s:,:)ZMX_TRACK_ENV} KITTY_LISTEN_ON KITTY_WINDOW_ID )
+export ZMX_TRACK_ENV="${(j:,:)_zmx_tracked_env}"
+unset _zmx_tracked_env
 
-# ─── SSH key switcher (fallback for multi-account setups) ────────────
-# Usage: set-ssh-key lewis-official-20260224
-# Prefer ~/.ssh/config Host aliases for automatic matching.
-# This is a fallback for edge cases where you need to force a specific key.
+function zmx-attach() {
+    if [[ -z "${1:-}" ]]; then
+        print -u2 'usage: zmx-attach <session>'
+        return 2
+    fi
+    env -u ZMX_SESSION zmx attach "$1"
+}
+
+function zmx-list() {
+    zmx list --short
+}
+
+# ─── Functions & Aliases ─────────────────────────────────────────────
 function set-ssh-key() {
     local key="$HOME/.ssh/$1"
     if [[ ! -f "$key" ]]; then
@@ -96,7 +88,6 @@ function set-ssh-key() {
     echo "Active SSH key: $1"
 }
 
-# ─── Aliases ─────────────────────────────────────────────────────────
 alias ls='eza --icons --group-directories-first'
 alias ll='eza -la --icons --group-directories-first'
 alias lt='eza --tree --icons --level=2'
@@ -106,41 +97,6 @@ alias grep='rg'
 alias top='btop'
 alias lg='lazygit'
 
-# ─── pnpm ────────────────────────────────────────────────────────────
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-    *":$PNPM_HOME:"*) ;;
-    *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
-# ─── zsh-syntax-highlighting ──────────────────────────────────────────
-# Load this at the very end of .zshrc so widgets created by compinit,
-# zle -N, and other plugins are included in syntax highlighting.
-if [[ -n "$BREW_PREFIX" && -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+# ─── Syntax Highlighting (must be loaded last) ───────────────────────
+[[ -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && \
     source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-elif [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-# kimi-code
-export PATH="/Users/yuchenzhang/.kimi-code/bin:$PATH"
-
-# pi
-export PATH="/Users/yuchenzhang/.bun/bin:$PATH"
-eval "$(direnv hook zsh)"
-
-# Reconnect a detached session; never share an already attached session.
-if [[ -o interactive && -z "${TMUX:-}" && ( "${TERM_PROGRAM:-}" == "ghostty" || -n "${KITTY_WINDOW_ID:-}" ) ]] && command -v tmux >/dev/null 2>&1; then
-    () {
-        local terminal_tmux_session
-        terminal_tmux_session=$(tmux list-sessions -f '#{==:#{session_attached},0}' -O activity -r -F '#{session_id}' 2>/dev/null)
-        terminal_tmux_session=${terminal_tmux_session%%$'\n'*}
-        if [[ -n "$terminal_tmux_session" ]]; then
-            # Recheck inside tmux in case another window attached after the list.
-            exec tmux if-shell -t "$terminal_tmux_session" -F '#{session_attached}' \
-                'new-session' "attach-session -t '$terminal_tmux_session'"
-        else
-            exec tmux new-session
-        fi
-    }
-fi

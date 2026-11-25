@@ -1,0 +1,24 @@
+# Native cursor movement keeps Kitty's cursor trail, followed by the tab effect.
+startgroup
+    animation_start cursor-trail-move
+    animation_stop cursor-trail-stop
+    animation_step 10
+    shaders cursor-trail-default
+endgroup
+
+# The native tab-change clock advances on rendered frames. This pass also
+# clears the geometry markers, so the static pass below leaves it untouched.
+startgroup
+    animation_start tab-change
+    animation_stop 180
+    # Display callbacks drive frames with sync_to_monitor; this is the timer
+    # wakeup deadline, not the frame interval. Avoid a wakeup every 2 ms.
+    animation_step 16
+    var bool MOVING = true
+    shaders active-tab-slide
+endgroup
+
+startgroup
+    animation_step 0
+    shaders active-tab-slide
+endgroup

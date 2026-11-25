@@ -1,37 +1,47 @@
 return {
   {
+    "mrjones2014/smart-splits.nvim",
+    lazy = false,
+    build = function(plugin)
+      local result = vim.system({ "bash", "kitty/install-kittens.bash" }, { cwd = plugin.dir }):wait()
+      assert(result.code == 0, result.stderr)
+    end,
+    opts = {
+      at_edge = "stop",
+      default_amount = 2,
+      disable_multiplexer_nav_when_zoomed = true,
+      multiplexer_integration = vim.env.KITTY_WINDOW_ID and vim.env.KITTY_LISTEN_ON and "kitty" or false,
+    },
+    config = function(_, opts)
+      if opts.multiplexer_integration == "kitty" then
+        require("configs.smart_splits_kitty").setup()
+      end
+      require("smart-splits").setup(opts)
+    end,
+  },
+
+  {
     "nvim-tree/nvim-tree.lua",
     init = function()
-      local group = vim.api.nvim_create_augroup("NvimTreeDirectoryStartup", { clear = true })
-
       vim.api.nvim_create_autocmd("VimEnter", {
-        group = group,
+        group = vim.api.nvim_create_augroup("NvimTreeDirectoryStartup", { clear = true }),
         once = true,
         callback = function(event)
           if event.file == "" or vim.fn.isdirectory(event.file) ~= 1 then
             return
           end
-
           local directory = vim.fn.fnamemodify(event.file, ":p")
-
-          -- Keep the initial directory buffer valid. NvChad's tabufline may
-          -- still reference it when the first file is opened.
           vim.cmd.cd(vim.fn.fnameescape(directory))
-
           require("lazy").load { plugins = { "nvim-tree.lua" } }
           require("nvim-tree.api").tree.open { path = directory }
         end,
       })
     end,
     opts = function(_, opts)
-      opts.filters = opts.filters or {}
-      opts.filters.git_ignored = false
-
-      opts.actions = opts.actions or {}
-      opts.actions.open_file = opts.actions.open_file or {}
-      opts.actions.open_file.window_picker = {
-        enable = false,
-      }
+      opts.filters = vim.tbl_extend("force", opts.filters or {}, { git_ignored = false })
+      opts.actions = vim.tbl_deep_extend("force", opts.actions or {}, {
+        open_file = { window_picker = { enable = false } },
+      })
 
       opts.on_attach = function(bufnr)
         local api = require "nvim-tree.api"
@@ -49,13 +59,11 @@ return {
 
         api.map.on_attach.default(bufnr)
 
-        -- Replace nvim-tree's unique split keys with the global h/v scheme.
         vim.keymap.del("n", "<C-x>", { buffer = bufnr })
         vim.keymap.del("n", "<C-v>", { buffer = bufnr })
         map("<leader>h", api.node.open.horizontal, "Open: Horizontal Split")
         map("<leader>v", api.node.open.vertical, "Open: Vertical Split")
 
-        -- Buffer-local defaults must not shadow seamless window navigation.
         map("<C-h>", smart_splits.move_cursor_left, "Window Left")
         map("<C-j>", smart_splits.move_cursor_down, "Window Down")
         map("<C-k>", smart_splits.move_cursor_up, "Window Up")

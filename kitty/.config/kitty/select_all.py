@@ -1,4 +1,4 @@
-"""Select kitty's current screen and in-memory scrollback (not tmux history)."""
+"""Select kitty's current screen and in-memory scrollback."""
 
 from kittens.tui.handler import result_handler
 
